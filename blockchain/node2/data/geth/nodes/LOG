@@ -1,0 +1,9 @@
+=============== Jul 28, 2021 (+03) ===============
+18:19:04.923575 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+18:19:04.924115 CURRENT: missing target file: MANIFEST-000000
+18:19:04.934484 db@open opening
+18:19:04.935612 version@stat F·[] S·0B[] Sc·[]
+18:19:04.938291 db@janitor F·2 G·0
+18:19:04.938291 db@open done T·3.8075ms
+20:15:55.203948 db@close closing
+20:15:55.204466 db@close done T·517.5µs
