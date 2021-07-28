@@ -1,0 +1,7 @@
+note1 : 0xb4a17e5d278EB3FF96df92FF2FE096b00217e13f
+password : 1
+node2 :  0x851106a5c4D8e7EC5AF70683746C05E29e9ab912
+password : 1
+node3 : 0x702AE78d6E546cC8D36528c5BB6CCae4D805Bff4
+password : 1
+bootnode enode : enode://edaec21ae6a85b1252df4ceb4ddc842a9ab74c397f489856039c7ec5ce72470f37554b94bcb11dff51d6ff2b553af9ac39ce9c9b3a7af6876a175768b5836da3@127.0.0.1:0?discport=30301
