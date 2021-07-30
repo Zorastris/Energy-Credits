@@ -7,3 +7,15 @@ help
 3
 admin.nodeInfo
 personal.listAccounts
+instance.addAsk(2, 5, "1627646580")
+[A
+instance.addAsk(2, 5, "1627646580")
+instance.addAsk(2, 5, "1627646580")
+const instance = await EnergyMarket.deployed()
+const instance1 = await EnergyMarket.deployed()
+const instance1 = await EnergyMarket.deployed();
+const instance = await EnergyMarket.deployed();
+instance.addAsk(2, 5, "1627646580")
+const instance1 = await EnergyMarket.deployed();
+EnergyMarket.deployed().then(instance1      App.contracts.EnergyMarket.deployed().then(instance1 => {instance1.addAsk(2, 5, "1627647420").then(value => {console.log(value)})});)
+const instance1 = await App.contracts.EnergyMarket.deployed();
