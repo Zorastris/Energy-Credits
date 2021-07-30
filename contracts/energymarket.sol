@@ -149,9 +149,9 @@ function sendEther() public payable returns (bool success){
   }
 
 //  Throws if Bid does not include sufficient amount of ether
-modifier hasethBalance(uint _amount, uint _price, uint _pricebhkw){
-    uint _price = _pricebhkw;
-    if (_price > _pricebhkw){
+modifier hasethBalance(uint _amount, uint _price, uint price){
+    _price = price;
+    if (_price > price){
       _price = _price;
     }
     if(fallbackPriceHigh>_price){
