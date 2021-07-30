@@ -1,9 +1,18 @@
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
+
 module.exports = {
   mode: 'development',
   entry: "./src/index.js",
+  // module: {
+  //   rules: [
+  //     {
+  //       test: /\.css$/i,
+  //       use: ["style-loader", "css-loader"],
+  //     },
+  //   ],
+  // },
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "dist"),

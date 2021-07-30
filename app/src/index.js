@@ -1,5 +1,7 @@
 import Web3 from "web3";
 import tokenArtifact from "../../build/contracts/EnergyCredits.json";
+import marketArtifact from "../../build/contracts/EnergyMarket.json";
+// import css from "./src/index.css";
 
 const App = {
   web3: null,
@@ -17,10 +19,10 @@ const App = {
         tokenArtifact.abi,
         deployedNetwork.address,
       );
-
       // get accounts
       const accounts = await web3.eth.getAccounts();
       this.account = accounts[0];
+      
 
       this.refreshBalance();
     } catch (error) {
@@ -29,9 +31,9 @@ const App = {
   },
 
   refreshBalance: async function() {
-    const { getBalance } = this.token.methods;
-    const balance = await getBalance(this.account).call();
-
+    const { balanceOf } = this.token.methods;
+    const balance = await balanceOf(this.account).call();
+    console.log(balance)
     const balanceElement = document.getElementsByClassName("balance")[0];
     balanceElement.innerHTML = balance;
   },
@@ -42,8 +44,8 @@ const App = {
 
     this.setStatus("Initiating transaction... (please wait)");
 
-    const { sendCoin } = this.token.methods;
-    await sendCoin(receiver, amount).send({ from: this.account });
+    const { transfer } = this.token.methods;
+    await transfer(receiver, amount).send({ from: this.account });
 
     this.setStatus("Transaction complete!");
     this.refreshBalance();

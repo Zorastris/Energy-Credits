@@ -1,0 +1,110 @@
+Compiling your contracts...
+===========================
+> Everything is up to date, there is nothing to compile.
+
+
+
+Starting migrations...
+======================
+> Network name:    'development'
+> Network id:      14333
+> Block gas limit: 8000000 (0x7a1200)
+
+
+1_initial_migration.js
+======================
+
+   Replacing 'Migrations'
+   ----------------------
+   > transaction hash:    0x7b2a53ab573b4a5041d5492051aa3cd9f45b3c1068905645b46c9e0692c68d51
+   > Blocks: 1            Seconds: 4
+   > contract address:    0xe0201f86820b6F83c8217EDe07D35c058d7E8a4b
+   > block number:        7375
+   > block timestamp:     1627678679
+   > account:             0xb4a17e5d278EB3FF96df92FF2FE096b00217e13f
+   > balance:             904625697166532776746648320380374280103671755200316906558.262396061821325312 
+   > gas used:            246892 (0x3c46c)
+   > gas price:           1 gwei
+   > value sent:          0 ETH
+   > total cost:          0.000246892 ETH
+
+
+   Replacing 'EnergyCredits'
+   -------------------------
+   > transaction hash:    0x2a5edd1b39bfca49a9202784ea955aaae9374d5e8c7004d830f80a62ddcc1db2
+   > Blocks: 0            Seconds: 4
+   > contract address:    0x1F1BC7ddAc3F83078C4725AE03b5C4C9caBC5A0E
+   > block number:        7376
+   > block timestamp:     1627678684
+   > account:             0xb4a17e5d278EB3FF96df92FF2FE096b00217e13f
+   > balance:             904625697166532776746648320380374280103671755200316906558.262396061821325312 
+   > gas used:            1783102 (0x1b353e)
+   > gas price:           1 gwei
+   > value sent:          0 ETH
+   > total cost:          0.001783102 ETH
+
+
+   Replacing 'EnergyMarket'
+   ------------------------
+   > transaction hash:    0xe0ee06de13ff80609b48e2ec6e2bce5a018fb32533e864d1c71cabbe740bdc12
+   > Blocks: 1            Seconds: 4
+   > contract address:    0x4775E51CdAC8E77AEa8C4Ef14abC19Dd71FA8732
+   > block number:        7377
+   > block timestamp:     1627678689
+   > account:             0xb4a17e5d278EB3FF96df92FF2FE096b00217e13f
+   > balance:             904625697166532776746648320380374280103671755200316906558.262396061821325312 
+   > gas used:            4283541 (0x415c95)
+   > gas price:           1 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004283541 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:         0.006313535 ETH
+
+
+2_deploy_contracts.js
+=====================
+
+   Replacing 'EnergyCredits'
+   -------------------------
+   > transaction hash:    0x5ff200a4252e567555efdf15d86b36bc1916ed2ca5ea3553f89f65e852d80a7c
+   > Blocks: 0            Seconds: 4
+   > contract address:    0x4d697C36Cdfb7c2360863F63FdbCCb5901271614
+   > block number:        7379
+   > block timestamp:     1627678699
+   > account:             0xb4a17e5d278EB3FF96df92FF2FE096b00217e13f
+   > balance:             904625697166532776746648320380374280103671755200316906558.262396061821325312 
+   > gas used:            1783102 (0x1b353e)
+   > gas price:           1 gwei
+   > value sent:          0 ETH
+   > total cost:          0.001783102 ETH
+
+
+   Replacing 'EnergyMarket'
+   ------------------------
+   > transaction hash:    0x1b29ecf93f5772dadd7391d1d4a96d42f8e1a0281ab605505b7cb940bf8da056
+   > Blocks: 0            Seconds: 4
+   > contract address:    0x9257d86Ef2170457A060265187Ec47E6f4c48fEF
+   > block number:        7380
+   > block timestamp:     1627678704
+   > account:             0xb4a17e5d278EB3FF96df92FF2FE096b00217e13f
+   > balance:             904625697166532776746648320380374280103671755200316906558.262396061821325312 
+   > gas used:            4283541 (0x415c95)
+   > gas price:           1 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004283541 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:         0.006066643 ETH
+
+
+Summary
+=======
+> Total deployments:   5
+> Final cost:          0.012380178 ETH

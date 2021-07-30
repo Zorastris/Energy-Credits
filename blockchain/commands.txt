@@ -21,8 +21,7 @@ url : http://127.0.0.1:8545          yukarıda node1 için rpc portu 8545 girild
 
 chainid : 14333    ilk başta genesis oluşturuken yazdığımız id  
 
-
-
+geth attach http://localhost:8545
 
 
 

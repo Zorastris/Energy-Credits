@@ -299,3 +299,19 @@
 23:14:47.446062 db@open done T·93.536ms
 23:21:48.878895 db@close closing
 23:21:48.879933 db@close done T·1.0376ms
+=============== Jul 30, 2021 (+03) ===============
+23:54:47.907941 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:54:47.908459 version@stat F·[1 1] S·3MiB[1MiB 1MiB] Sc·[0.25 0.01]
+23:54:47.908968 db@open opening
+23:54:47.908968 journal@recovery F·1
+23:54:47.911142 journal@recovery recovering @68
+23:54:47.917688 memdb@flush created L0@70 N·824 S·92KiB "\f\xdc\x11..:h\x8d,v69409":"\xec\x14\xbe..Ӭ!,v69412"
+23:54:47.920915 version@stat F·[2 1] S·3MiB[1MiB 1MiB] Sc·[0.50 0.01]
+23:54:47.929914 db@janitor F·11 G·6
+23:54:47.929914 db@janitor removing table-27
+23:54:47.929914 db@janitor removing table-28
+23:54:47.930915 db@janitor removing table-31
+23:54:47.930915 db@janitor removing table-34
+23:54:47.930915 db@janitor removing journal-35
+23:54:47.930915 db@janitor removing manifest-36
+23:54:47.930915 db@open done T·21.9463ms
