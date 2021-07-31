@@ -10,11 +10,15 @@
   "devDependencies": {
     "@webpack-cli/serve": "^1.5.1",
     "copy-webpack-plugin": "^5.0.5",
-    "webpack": "^4.41.2",
+    "css-loader": "^6.2.0",
+    "style-loader": "^3.2.1",
+    "webpack": "^5.47.1",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
+    "node-polyfill-webpack-plugin": "^1.1.4",
+    "path-browserify": "^1.0.1",
     "web3": "^1.5.0"
   },
   "main": "webpack.config.js",
