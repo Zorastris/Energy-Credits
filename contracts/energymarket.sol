@@ -141,7 +141,7 @@ mapping(address => uint) remainingLockedValue;
 EnergyCreditsInterface EnergyCredits = EnergyCreditsInterface(ckaddress);
 
 //  Constructor of contract to equip the market place with ether
-constructor() payable{}
+constructor() {}
 
 // Equip market place with more ether
 function sendEther() public payable returns (bool success){
@@ -149,11 +149,7 @@ function sendEther() public payable returns (bool success){
   }
 
 //  Throws if Bid does not include sufficient amount of ether
-modifier hasethBalance(uint _amount, uint _price, uint price){
-    _price = price;
-    if (_price > price){
-      _price = _price;
-    }
+modifier hasethBalance(uint _amount, uint _price){
     if(fallbackPriceHigh>_price){
       require((msg.value + remainingLockedValue[msg.sender])>=((fallbackPriceHigh)*_amount)*(10**14));
     }
@@ -176,8 +172,8 @@ modifier isTrigger(){
   _;
   }
 
-//  Creation of an Ask
-// @param _amount of electricity, _price which is asked for
+// Creation of an Ask
+// _price which is asked for
 // _timestamp of ask
 // @notice A market participant can place an ask if no future bid has been made in
 // this trading period, empty asks are forbidden to be protected against DOS attacks
@@ -217,7 +213,7 @@ function addAsk (uint _amount, uint _price, string memory _timestamp) public has
 // _pricebhkw is the reservation price for CHP-Energy, _timestamp of bid
 // @notice A market participant can place an bid if no future ask has been made in t
 // his trading period, empty asks are forbidden to be protected against DOS attacks
-function addBid (uint _amount, uint _price, uint _pricebhkw, string memory _timestamp) public payable hasethBalance(_amount,_price,_pricebhkw) {
+function addBid (uint _amount, uint _price, string memory _timestamp) public payable hasethBalance(_amount,_price) {
     require(asks[msg.sender].amount==0);
     if(bids[msg.sender].amount==0){
       Bid storage bid = bids[msg.sender];
@@ -225,12 +221,6 @@ function addBid (uint _amount, uint _price, uint _pricebhkw, string memory _time
       bid.amount = _amount;
       bid.price = _price;
       bid.timestamp = _timestamp;
-      if (_pricebhkw > _price){
-        bhkw++;
-      }
-      if (_price > _pricebhkw){
-        pv++;
-      }
       bid_ids.push(msg.sender);
       remainingLockedValue[msg.sender]=(msg.value);
     }
@@ -239,25 +229,7 @@ function addBid (uint _amount, uint _price, uint _pricebhkw, string memory _time
       bidUpdate.amount = _amount;
       bidUpdate.price = _price;
       bidUpdate.timestamp = _timestamp;
-      if (_pricebhkw > _price){
-        bhkw++;
-        pv--;
-      }
-      if(_pricebhkw < _price){
-        pv++;
-        bhkw--;
-      }
-
       bids[msg.sender] = bidUpdate;
-
-      uint _price = _pricebhkw;
-      if (_price > _pricebhkw){
-        _price = _price;
-      }
-      if(fallbackPriceHigh>_price){
-        _price = fallbackPriceHigh;
-      }
-
       if ((_price * 10**14 * _amount) < remainingLockedValue[msg.sender]){
         payable(msg.sender).transfer(remainingLockedValue[msg.sender] - (_price * 10**14 * _amount));
         remainingLockedValue[msg.sender]= (_price * 10**14 * _amount);

@@ -10,7 +10,7 @@ const App = {
   market: null,
   start: async function() {
     const { web3 } = this;
-
+    
     try {
       // get contract instance
       const networkId = await web3.eth.net.getId();
@@ -37,15 +37,42 @@ const App = {
 
   refreshBalance: async function() {
     const { balanceOf } = this.token.methods;
-    var balance = await balanceOf(this.account).call();
+    var balance = await balanceOf(this.account).call()/1000;
     console.log(this.account);
     console.log(balance);
     const balanceElement = document.getElementsByClassName("balance")[0];
     balanceElement.innerHTML = balance;
   },
 
-  sendCoin: async function() {
-    const amount = parseInt(document.getElementById("amount").value);
+  checkBalance: async function() {
+    const checkAccount = document.getElementById("check-balance").value;
+    const { balanceOf } = this.token.methods;
+    var balance = await balanceOf(checkAccount).call()/1000;
+    const checkElement = document.getElementsByClassName("check-balance-result")[0];
+    checkElement.innerHTML = balance;
+  },
+
+  addAsk: async function() {
+    let date = (new Date()).getTime();
+    const amount = parseInt(document.getElementById("amount-ask").value);
+    const price = parseInt(document.getElementById("price-ask").value);
+
+    console.log(date);
+    const { addAsk } = this.market.methods;
+    await addAsk(amount, price, date).send({from: this.account});
+
+  },
+
+  getAsks: async function() {
+    const { getAllAsks } = this.market.methods;
+    var asks = await getAllAsks().call();
+    console.log(asks);
+    const balanceElement = document.getElementsByClassName("balance")[0];
+    balanceElement.innerHTML = balance;
+  },
+
+  sendCredits: async function() {
+    const amount = parseInt(document.getElementById("amount").value)*1000;
     const receiver = document.getElementById("receiver").value;
 
     this.setStatus("Initiating transaction... (please wait)");
