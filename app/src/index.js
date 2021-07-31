@@ -7,7 +7,7 @@ const App = {
   web3: null,
   account: null,
   token: null,
-
+  market: null,
   start: async function() {
     const { web3 } = this;
 
@@ -19,6 +19,11 @@ const App = {
         tokenArtifact.abi,
         deployedNetwork.address,
       );
+      this.market = new web3.eth.Contract(
+        marketArtifact.abi,
+        deployedNetwork.address,
+      );
+
       // get accounts
       const accounts = await web3.eth.getAccounts();
       this.account = accounts[0];
@@ -32,8 +37,9 @@ const App = {
 
   refreshBalance: async function() {
     const { balanceOf } = this.token.methods;
-    const balance = await balanceOf(this.account).call();
-    console.log(balance)
+    var balance = await balanceOf(this.account).call();
+    console.log(this.account);
+    console.log(balance);
     const balanceElement = document.getElementsByClassName("balance")[0];
     balanceElement.innerHTML = balance;
   },
