@@ -1,7 +1,7 @@
 import Web3 from "web3";
 import tokenArtifact from "../../build/contracts/EnergyCredits.json";
 import marketArtifact from "../../build/contracts/EnergyMarket.json";
-// import css from "./src/index.css";
+//import css from "index.css";
 
 const App = {
   web3: null,
