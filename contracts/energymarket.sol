@@ -177,9 +177,10 @@ modifier isTrigger(){
 // _timestamp of ask
 // @notice A market participant can place an ask if no future bid has been made in
 // this trading period, empty asks are forbidden to be protected against DOS attacks
-function addAsk (uint _amount, uint _price, string memory _timestamp) public hastokenBalance(_amount){
-  require(bids[msg.sender].amount==0);
-  require(_amount > 0);
+function addAsk (uint _amount, uint _price) public hastokenBalance(_amount){
+    string memory _timestamp = uint2str(block.timestamp);
+  require(bids[msg.sender].amount==0, "bid != 0");
+  require(_amount > 0, "amount = 0");
   if(asks[msg.sender].amount==0){
     Ask storage ask = asks[msg.sender];
     ask.asker = msg.sender;
@@ -213,7 +214,8 @@ function addAsk (uint _amount, uint _price, string memory _timestamp) public has
 // _pricebhkw is the reservation price for CHP-Energy, _timestamp of bid
 // @notice A market participant can place an bid if no future ask has been made in t
 // his trading period, empty asks are forbidden to be protected against DOS attacks
-function addBid (uint _amount, uint _price, string memory _timestamp) public payable hasethBalance(_amount,_price) {
+function addBid (uint _amount, uint _price) public payable hasethBalance(_amount,_price) {
+    string memory _timestamp = uint2str(block.timestamp);
     require(asks[msg.sender].amount==0);
     if(bids[msg.sender].amount==0){
       Bid storage bid = bids[msg.sender];
@@ -338,11 +340,40 @@ function getUniformprice () public view returns (uint) {
   }
 
 //function um bei Bids und Asks zu prüfen, ob auch die Auction getriggered werden soll
-function getBoolean() public view returns(bool result){
+function getBoolean() public view returns(bool){
     if(block.number>=lastTriggerBlock+trigger){
         return true;
     }
   }
+
+function uint2str(
+  uint256 _i
+)
+  internal
+  pure
+  returns (string memory str)
+{
+  if (_i == 0)
+  {
+    return "0";
+  }
+  uint256 j = _i;
+  uint256 length;
+  while (j != 0)
+  {
+    length++;
+    j /= 10;
+  }
+  bytes memory bstr = new bytes(length);
+  uint256 k = length;
+  j = _i;
+  while (j != 0)
+  {
+    bstr[--k] = bytes1(uint8(48 + j % 10));
+    j /= 10;
+  }
+  str = string(bstr);
+}
 
 function updateFallbackPriceHigh(uint _fallbackpricehigh) public onlyOwner returns (bool){ //reihenfolge checken und owner implementieren
     uint r = fallbackPriceHigh;
