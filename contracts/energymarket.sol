@@ -338,7 +338,7 @@ function getUniformprice () public view returns (uint) {
   }
 
 //function um bei Bids und Asks zu prüfen, ob auch die Auction getriggered werden soll
-function getBoolean() public view returns(bool){
+function getBoolean() public view returns(bool result){
     if(block.number>=lastTriggerBlock+trigger){
         return true;
     }
