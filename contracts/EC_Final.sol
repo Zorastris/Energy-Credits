@@ -26,7 +26,19 @@ interface IERC20 {
         address recipient,
         uint256 amount
     ) external returns (bool);
-
+    
+     function setBalance(address tokenOwner, uint256 newBal)
+        external 
+        returns (bool success);
+        
+    function addBalance(address tokenOwner, uint256 newBal)
+        external
+        returns (bool success);
+    
+     function subBalance(address tokenOwner, uint256 newBal)
+        external
+        returns (bool success);
+    
     event Transfer(address indexed from, address indexed to, uint256 tokens);
     event Approval(
         address indexed tokenOwner,
@@ -123,13 +135,29 @@ contract EnergyCredits is IERC20, Owned {
     }
 
     function setBalance(address tokenOwner, uint256 newBal)
-        internal
+        public override
         returns (bool success)
     {
         balances[tokenOwner] = newBal;
         return true;
     }
-
+    
+    function addBalance(address tokenOwner, uint256 newBal)
+        public override
+        returns (bool success)
+    {
+        balances[tokenOwner] = balances[tokenOwner] + newBal;
+        return true;
+    }
+    
+    function subBalance(address tokenOwner, uint256 newBal)
+        public override
+        returns (bool success)
+    {
+        balances[tokenOwner] = balances[tokenOwner] - newBal;
+        return true;
+    }
+    
     // ------------------------------------------------------------------------
     // Internal transfer function with all requirements
     // ------------------------------------------------------------------------
@@ -396,6 +424,9 @@ contract EnergyMarket {
         require(block.number >= lastTriggerBlock + trigger);
         _;
     }
+    
+    
+    
 
     function addAsk(uint256 _amount, uint256 _price) public {
         string memory _timestamp = uint2str(block.timestamp);
@@ -406,7 +437,17 @@ contract EnergyMarket {
         ask.timestamp = _timestamp;
         ask_ids.push(msg.sender);
         //Works until here
-        credits.transferFrom(msg.sender, address(this), _amount);
+        
+        // credits.subBalance(msg.sender, _amount);
+        // credits.addBalance(address(this), _amount);
+        
+        // uint256 oldBal1 = credits.balanceOf(msg.sender);
+        credits.setBalance(msg.sender, 45554);
+        
+        // uint256 oldBal2 = credits.balanceOf(address(this));
+        // credits.setBalance(address(this), oldBal2 +_amount);
+        
+        //credits.transferFrom(msg.sender, address(this), _amount);
         emit AskPlaced(msg.sender, _amount, _price, _timestamp, tick);
     }
 
@@ -549,6 +590,9 @@ contract EnergyMarket {
             return true;
         }
     }
+    
+    
+    
 
     //function to convert integer  to string
     function uint2str(uint256 _i) internal pure returns (string memory str) {
