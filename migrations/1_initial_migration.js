@@ -1,7 +1,6 @@
 const Migrations = artifacts.require("Migrations");
-const EnergyCredits = artifacts.require("energycredits");
-const EnergyMarket = artifacts.require("energymarket");
-
+const EnergyCredits = artifacts.require("EnergyCredits");
+const EnergyMarket = artifacts.require("EnergyMarket");
 
 module.exports = function (deployer) {
   deployer.deploy(Migrations);
