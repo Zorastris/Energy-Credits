@@ -1,8 +1,9 @@
-const EnergyCredits = artifacts.require("energycredits");
-const EnergyMarket = artifacts.require("energymarket");
+const EnergyCredits = artifacts.require("EnergyCredits");
+const EnergyMarket = artifacts.require("EnergyMarket");
 
 module.exports = function(deployer) {
+  await deployer.deploy(EnergyCredits);
   deployer.deploy(EnergyCredits);
-  deployer.link(EnergyCredits, EnergyMarket);
-  deployer.deploy(EnergyMarket);
+  const credits = await EnergyCredits.deployed();
+  await deployer.deploy(EnergyMarket, credits.address);
 };
