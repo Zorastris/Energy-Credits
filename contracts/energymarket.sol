@@ -71,15 +71,15 @@ contract Ownable {
     emit OwnershipTransferred(_owner, newOwner);
     _owner = newOwner;
   }
-  }
+}
 
 contract EnergyMarket is Ownable{
 uint fallbackPriceHigh = 2367;  // 23,67 Cent
 uint fallbackPriceLow = 1200;   //12,00 Cent
 uint match_id=0;
 uint uniformprice = 0;
-uint uniformPriceBHKW = 0;
 uint tick = 0;
+uint price;
 uint8 pv  = 0;
 uint8 bhkw = 0;
 uint lastTriggerBlock = block.number;
@@ -574,5 +574,10 @@ function reset_before() private{
     uniformprice = 0;
 
 }
+
+function test() public returns (uint){
+  return EnergyCredits.totalSupply();
+}
+
 
 }

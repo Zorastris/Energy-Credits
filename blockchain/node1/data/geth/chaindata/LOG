@@ -492,3 +492,35 @@
 13:36:12.378866 db@open done T·19.05ms
 18:04:42.180765 db@close closing
 18:04:42.181279 db@close done T·513.4µs
+=============== Aug 1, 2021 (+03) ===============
+19:07:01.222796 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+19:07:01.233445 version@stat F·[2 3] S·5MiB[234KiB 4MiB] Sc·[0.50 0.05]
+19:07:01.233445 db@open opening
+19:07:01.233445 journal@recovery F·1
+19:07:01.235697 journal@recovery recovering @115
+19:07:01.300834 memdb@flush created L0@117 N·25492 S·1MiB "\x03g\x96..\x001\x17,v154467":"\xf8 \xf6..\x01{\xf7,v154477"
+19:07:01.302950 version@stat F·[3 3] S·6MiB[1MiB 4MiB] Sc·[0.75 0.05]
+19:07:01.317920 db@janitor F·8 G·0
+19:07:01.317920 db@open done T·84.4748ms
+=============== Aug 1, 2021 (+03) ===============
+20:32:16.879312 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+20:32:16.879830 version@stat F·[3 3] S·6MiB[1MiB 4MiB] Sc·[0.75 0.05]
+20:32:16.879830 db@open opening
+20:32:16.880344 journal@recovery F·1
+20:32:16.882609 journal@recovery recovering @118
+20:32:16.914565 memdb@flush created L0@120 N·2089 S·106KiB "H\x01\x03..Գ\x82,v155746":"unc..own,v154483"
+20:32:16.916869 version@stat F·[4 3] S·6MiB[1MiB 4MiB] Sc·[1.00 0.05]
+20:32:16.930752 db@janitor F·9 G·0
+20:32:16.930752 db@open done T·50.922ms
+20:32:16.930752 table@compaction L0·4 -> L1·3 S·6MiB Q·156572
+20:32:17.022593 table@build created L1@123 N·41733 S·2MiB "\x01\xdd\x00..\x92\x8d\xd9,v68497":"h\x00\x00..\xa9y\xef,v11598"
+20:32:17.099629 table@build created L1@124 N·22960 S·2MiB "h\x00\x00..y\xeft,v11595":"h\x00\x00..\x9dS\x8f,v112716"
+20:32:17.168347 table@build created L1@125 N·33202 S·1MiB "h\x00\x00..S\x8ft,v112713":"\xffc_..\x1bڻ,v68512"
+20:32:17.168347 version@stat F·[0 3] S·6MiB[0B 6MiB] Sc·[0.00 0.06]
+20:32:17.169436 table@compaction committed F-4 S-346KiB Ke·0 D·13879 T·238.6837ms
+20:32:17.169951 table@remove removed @117
+20:32:17.169951 table@remove removed @114
+20:32:17.170466 table@remove removed @111
+20:32:17.170466 table@remove removed @108
+20:32:17.170981 table@remove removed @109
+20:32:17.170981 table@remove removed @110

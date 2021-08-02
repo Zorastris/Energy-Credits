@@ -41,12 +41,12 @@ library SafeMath {
 // ----------------------------------------------------------------------------
 interface IERC20 {
     function totalSupply() external view returns (uint256);
-    function balanceOf(address tokenOwner) external view returns (uint256);
-    function allowance(address tokenOwner, address spender) external view returns (uint remaining);
+    function balanceOf(address account) external view returns (uint256);
     function transfer(address recipient, uint256 amount) external returns (bool);
-    function approve(address spender, uint tokens) external returns (bool success);
-    function transferFrom(address from, address to, uint tokens) external returns (bool success);
-
+    function allowance(address owner, address spender) external view returns (uint256);
+    function approve(address spender, uint256 amount) external returns (bool);
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+    
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
     event Burn(address indexed from, uint256 value);
@@ -161,7 +161,7 @@ contract EnergyCredits is IERC20, Owned {
     // ------------------------------------------------------------------------
     // Transfer the balance from token owner's account to `to` account
     // ------------------------------------------------------------------------
-    function transfer(address to, uint tokens) public virtual override returns (bool success) {
+    function transfer(address to, uint tokens) public override returns (bool success) {
         _transfer(msg.sender,to,tokens);
         return true;
     }
@@ -171,7 +171,7 @@ contract EnergyCredits is IERC20, Owned {
     // Token owner can approve for `spender` to transferFrom(...) `tokens`
     // from the token owner's account
     // ------------------------------------------------------------------------
-    function approve(address spender, uint tokens) public virtual override returns (bool success) {
+    function approve(address spender, uint tokens) public override returns (bool success) {
         allowed[msg.sender][spender] = tokens;
         emit Approval(msg.sender, spender, tokens);
         return true;
@@ -184,7 +184,7 @@ contract EnergyCredits is IERC20, Owned {
     // The calling account must already have sufficient tokens approve(...)-d
     // for spending from the `from` account and
     // ------------------------------------------------------------------------
-    function transferFrom(address from, address to, uint tokens) public virtual override returns (bool success) {
+    function transferFrom(address from, address to, uint tokens) public override returns (bool success) {
         require(tokens <= allowed[from][msg.sender]);
         allowed[from][msg.sender] = allowed[from][msg.sender].sub(tokens);
         _transfer(from,to,tokens);
