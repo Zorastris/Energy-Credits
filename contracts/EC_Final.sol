@@ -1,308 +1,23 @@
-pragma solidity >=0.6.0 <0.9.0;
-
 // SPDX-License-Identifier: MIT
 // ----------------------------------------------------------------------------
 // ERC Token Standard #20 Interface
 // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md
 // ----------------------------------------------------------------------------
-interface IERC20 {
-    function totalSupply() external view returns (uint256);
 
-    function balanceOf(address account) external view returns (uint256);
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.2;
 
-    function transfer(address recipient, uint256 amount)
-        external
-        returns (bool);
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-    function allowance(address owner, address spender)
-        external
-        view
-        returns (uint256);
-
-    function approve(address spender, uint256 amount) external returns (bool);
-
-    function transferFrom(
-        address sender,
-        address recipient,
-        uint256 amount
-    ) external returns (bool);
-    
-     function setBalance(address tokenOwner, uint256 newBal)
-        external 
-        returns (bool success);
-        
-    function addBalance(address tokenOwner, uint256 newBal)
-        external
-        returns (bool success);
-    
-     function subBalance(address tokenOwner, uint256 newBal)
-        external
-        returns (bool success);
-    
-    event Transfer(address indexed from, address indexed to, uint256 tokens);
-    event Approval(
-        address indexed tokenOwner,
-        address indexed spender,
-        uint256 tokens
-    );
-    event Burn(address indexed from, uint256 value);
-}
-
-// ----------------------------------------------------------------------------
-// Owned contract
-// ----------------------------------------------------------------------------
-contract Owned {
-    address public owner;
-    address public newOwner;
-
-    event OwnershipTransferred(address indexed _from, address indexed _to);
-
-    constructor() public {
-        owner = msg.sender;
+contract EnergyCredits is ERC20, ERC20Burnable, Ownable {
+    constructor() ERC20("Energy Credits", "EC") {
+        _mint(msg.sender, 50000 * 10**decimals());
     }
 
-    modifier onlyOwner() {
-        require(msg.sender == owner);
-        _;
-    }
-
-    function transferOwnership(address _newOwner) public onlyOwner {
-        newOwner = _newOwner;
-    }
-
-    function acceptOwnership() public {
-        require(msg.sender == newOwner);
-        emit OwnershipTransferred(owner, newOwner);
-        owner = newOwner;
-        newOwner = address(0);
-    }
-}
-
-// ----------------------------------------------------------------------------
-// Energy Credits
-// ERC20 Standard Token
-// Represents electricity in kWh
-//
-// Symbol      : EC
-// Name        : Energy Credits
-// Total supply: 1,000,000.000
-// Decimals    : 3
-// ----------------------------------------------------------------------------
-contract EnergyCredits is IERC20, Owned {
-    string public symbol;
-    string public name;
-    uint8 public decimals;
-    uint256 _totalSupply;
-
-    mapping(address => uint256) public balances;
-    mapping(address => mapping(address => uint256)) public allowed;
-    mapping(address => bool) public frozenAccount;
-
-    event FrozenFunds(address target, bool frozen);
-    event sTest(string s);
-    event iTest(uint256 i);
-    event aTest(address a);
-
-    // ------------------------------------------------------------------------
-    // Constructor
-    // ------------------------------------------------------------------------
-    constructor() public {
-        symbol = "EC";
-        name = "Energy Credits";
-        decimals = 0;
-        _totalSupply = 1000000;
-        balances[owner] = _totalSupply;
-        emit Transfer(address(0), owner, _totalSupply);
-    }
-
-    // ------------------------------------------------------------------------
-    // Total supply
-    // ------------------------------------------------------------------------
-    function totalSupply() public view override returns (uint256) {
-        return _totalSupply;
-    }
-
-    // ------------------------------------------------------------------------
-    // Get the token balance for account `tokenOwner`
-    // ------------------------------------------------------------------------
-    function balanceOf(address tokenOwner)
-        public
-        view
-        override
-        returns (uint256 balance)
-    {
-        return balances[tokenOwner];
-    }
-
-    function setBalance(address tokenOwner, uint256 newBal)
-        public override
-        returns (bool success)
-    {
-        balances[tokenOwner] = newBal;
-        return true;
-    }
-    
-    function addBalance(address tokenOwner, uint256 newBal)
-        public override
-        returns (bool success)
-    {
-        balances[tokenOwner] = balances[tokenOwner] + newBal;
-        return true;
-    }
-    
-    function subBalance(address tokenOwner, uint256 newBal)
-        public override
-        returns (bool success)
-    {
-        balances[tokenOwner] = balances[tokenOwner] - newBal;
-        return true;
-    }
-    
-    // ------------------------------------------------------------------------
-    // Internal transfer function with all requirements
-    // ------------------------------------------------------------------------
-    function _transfer(
-        address _from,
-        address _to,
-        uint256 _value
-    ) internal {
-        // Prevent transfer to 0x0 address. Use burn() instead
-        require(_to != address(0));
-        // Check if the sender has enough
-        require(balances[_from] >= _value);
-        //Check for empty transfer
-        require(_value > 0);
-        // Check for overflows
-        require(balances[_to] + _value > balances[_to]);
-        // Check if sender is frozen
-        require(!frozenAccount[_from]);
-        // Check if reciever is frozen
-        require(!frozenAccount[_to]);
-        // Save this for an assertion in the future
-        uint256 previousBalances = balances[_from] + balances[_to];
-        // Subtract from the sender
-        balances[_from] = balances[_from] + _value;
-        // Add the same to the recipient
-        balances[_to] = balances[_to] + _value;
-        // Asserts are used to use static analysis to find bugs in your code. They should never fail
-        assert(balances[_from] + balances[_to] == previousBalances);
-
-        emit Transfer(_from, _to, _value);
-    }
-
-    // ------------------------------------------------------------------------
-    // Transfer the balance from token owner's account to `to` account
-    // ------------------------------------------------------------------------
-    function transfer(address to, uint256 tokens)
-        public
-        override
-        returns (bool success)
-    {
-        _transfer(msg.sender, to, tokens);
-        return true;
-    }
-
-    // ------------------------------------------------------------------------
-    // Token owner can approve for `spender` to transferFrom(...) `tokens`
-    // from the token owner's account
-    // ------------------------------------------------------------------------
-    function approve(address spender, uint256 tokens)
-        public
-        override
-        returns (bool success)
-    {
-        allowed[msg.sender][spender] = tokens;
-        emit Approval(msg.sender, spender, tokens);
-        return true;
-    }
-
-    // ------------------------------------------------------------------------
-    // Transfer `tokens` from the `from` account to the `to` account
-    //
-    // The calling account must already have sufficient tokens approve(...)-d
-    // for spending from the `from` account and
-    // ------------------------------------------------------------------------
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokens
-    ) public override returns (bool success) {
-        // require(tokens <= balances[from]);
-
-        // require(tokens <= allowed[from][msg.sender]);
-        emit iTest(balances[from]);
-        emit iTest(tokens);
-
-        balances[from] -= tokens;
-        //allowed[from][to] -= tokens;
-        balances[to] += tokens;
-
-        emit Transfer(owner, to, tokens);
-
-        return true;
-    }
-
-    // ------------------------------------------------------------------------
-    // Returns the amount of tokens approved by the owner that can be
-    // transferred to the spender's account
-    // ------------------------------------------------------------------------
-    function allowance(address tokenOwner, address spender)
-        public
-        view
-        override
-        returns (uint256 remaining)
-    {
-        return allowed[tokenOwner][spender];
-    }
-
-    // ------------------------------------------------------------------------
-    // Mints new tokens and puts them in target´s account
-    // ------------------------------------------------------------------------
-    function mintToken(address target, uint256 amount)
-        public
-        onlyOwner
-        returns (bool success)
-    {
-        balances[target] = balances[target] + amount;
-        _totalSupply = _totalSupply + amount;
-        emit Transfer(address(0), owner, amount);
-        emit Transfer(owner, target, amount);
-        return true;
-    }
-
-    // ------------------------------------------------------------------------
-    // Burns tokens
-    // ------------------------------------------------------------------------
-    function burn(uint256 _value) public onlyOwner returns (bool success) {
-        require(balances[msg.sender] >= _value);
-        balances[msg.sender] = balances[msg.sender] - _value;
-        _totalSupply = _totalSupply - _value;
-        emit Burn(msg.sender, _value);
-        return true;
-    }
-
-    // ------------------------------------------------------------------------
-    // Freezes certain account. Tokens cannot be moved anymore
-    // ------------------------------------------------------------------------
-    function freezeAccount(address target, bool freeze)
-        public
-        onlyOwner
-        returns (bool success)
-    {
-        frozenAccount[target] = freeze;
-        emit FrozenFunds(target, freeze);
-        return true;
-    }
-
-    // ------------------------------------------------------------------------
-    // Owner can transfer out any accidentally sent ERC20 tokens
-    // ------------------------------------------------------------------------
-    function transferAnyERC20Token(address tokenAddress, uint256 tokens)
-        public
-        onlyOwner
-        returns (bool success)
-    {
-        return IERC20(tokenAddress).transfer(owner, tokens);
+    function mint(address to, uint256 amount) public onlyOwner {
+        _mint(to, amount);
     }
 }
 
@@ -315,10 +30,10 @@ contract EnergyMarket {
     uint256 matchAmount = 0;
     uint256 trigger = 0;
     address ckaddress = address(0); // <-- manually change the address to your token address
-    IERC20 public credits;
+    IERC20 private _credits;
 
-    constructor() public {
-        credits = new EnergyCredits();
+    constructor(IERC20 credits) {
+        _credits = credits;
     }
 
     // Structs
@@ -412,7 +127,7 @@ contract EnergyMarket {
     //  Throws if Ask does not include sufficient amount of token
     modifier hastokenBalance(uint256 _amount) {
         require(
-            (credits.allowance(msg.sender, address(this)) +
+            (_credits.allowance(msg.sender, address(this)) +
                 remainingLockedValue[msg.sender]) >= _amount
         );
         _;
@@ -424,9 +139,6 @@ contract EnergyMarket {
         require(block.number >= lastTriggerBlock + trigger);
         _;
     }
-    
-    
-    
 
     function addAsk(uint256 _amount, uint256 _price) public {
         string memory _timestamp = uint2str(block.timestamp);
@@ -436,18 +148,7 @@ contract EnergyMarket {
         ask.price = _price;
         ask.timestamp = _timestamp;
         ask_ids.push(msg.sender);
-        //Works until here
-        
-        // credits.subBalance(msg.sender, _amount);
-        // credits.addBalance(address(this), _amount);
-        
-        // uint256 oldBal1 = credits.balanceOf(msg.sender);
-        credits.setBalance(msg.sender, 45554);
-        
-        // uint256 oldBal2 = credits.balanceOf(address(this));
-        // credits.setBalance(address(this), oldBal2 +_amount);
-        
-        //credits.transferFrom(msg.sender, address(this), _amount);
+        _credits.transferFrom(msg.sender, address(this), _amount);
         emit AskPlaced(msg.sender, _amount, _price, _timestamp, tick);
     }
 
@@ -590,9 +291,6 @@ contract EnergyMarket {
             return true;
         }
     }
-    
-    
-    
 
     //function to convert integer  to string
     function uint2str(uint256 _i) internal pure returns (string memory str) {
@@ -777,7 +475,7 @@ contract EnergyMarket {
     function matchingTransactions() private {
         //Transactions for PV
         for (uint256 z = 0; z < match_ids.length; z++) {
-            credits.transfer(
+            _credits.transfer(
                 matches[match_ids[z]].askaddress,
                 (matches[match_ids[z]].amount)
             ); // Asker bekommt token vom contract (die wir vom Bidder bekommen haben)
@@ -837,7 +535,7 @@ contract EnergyMarket {
     }
 
     function test() public returns (uint256) {
-        uint256 value = credits.balanceOf(msg.sender);
+        uint256 value = _credits.balanceOf(msg.sender);
         emit iTest(value);
         return value;
     }
