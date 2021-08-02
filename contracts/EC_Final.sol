@@ -119,7 +119,7 @@ contract EnergyMarket {
     modifier hasethBalance(uint256 _amount, uint256 _price) {
         require(
             (msg.value + remainingLockedValue[msg.sender]) >=
-                ((_price) * _amount) * (10**14)
+                ((_price) * _amount) * (10**1), "Not enough ether"
         );
         _;
     }
@@ -140,7 +140,10 @@ contract EnergyMarket {
         _;
     }
 
-    function addAsk(uint256 _amount, uint256 _price) public {
+    function addAsk(uint256 _amount, uint256 _price)
+        public
+        hastokenBalance(_amount)
+    {
         string memory _timestamp = uint2str(block.timestamp);
         Ask storage ask = asks[msg.sender];
         ask.asker = msg.sender;
@@ -148,14 +151,16 @@ contract EnergyMarket {
         ask.price = _price;
         ask.timestamp = _timestamp;
         ask_ids.push(msg.sender);
+        remainingLockedValue[ask.asker]=_amount;
         _credits.transferFrom(msg.sender, address(this), _amount);
         emit AskPlaced(msg.sender, _amount, _price, _timestamp, tick);
     }
 
     //  Creation of a Bid
-    //  _amount of electricity, _price is the reservation price for PV-Energy,
-    //  A market participant can place an bid if no future ask has been made in t
-    //  his trading period
+    //  _amount of electricity, 
+    //  _price is the reservation price for Energy,
+    //  A market participant can place an bid if no future ask has been made  
+    //  in this trading period
     function addBid(uint256 _amount, uint256 _price)
         public
         payable
@@ -178,13 +183,13 @@ contract EnergyMarket {
             bidUpdate.timestamp = _timestamp;
             bids[msg.sender] = bidUpdate;
             if (
-                (_price * 10**14 * _amount) < remainingLockedValue[msg.sender]
+                (_price * 10**1 * _amount) < remainingLockedValue[msg.sender]
             ) {
                 payable(msg.sender).transfer(
                     remainingLockedValue[msg.sender] -
-                        (_price * 10**14 * _amount)
+                        (_price * 10**4 * _amount)
                 );
-                remainingLockedValue[msg.sender] = (_price * 10**14 * _amount);
+                remainingLockedValue[msg.sender] = (_price * 10**1 * _amount);
             } else {
                 remainingLockedValue[msg.sender] = (remainingLockedValue[
                     msg.sender
@@ -254,9 +259,9 @@ contract EnergyMarket {
         return asks[_address].amount;
     }
 
-    // //  Shows point in time of ask
-    // // @param address of asker
-    // // @return string reprensenting the timestamp of the bid
+    // Shows point in time of ask
+    // address of asker
+    // string reprensenting the timestamp of the bid
     function getAskTimestamp(address _address)
         public
         view
@@ -265,21 +270,20 @@ contract EnergyMarket {
         return asks[_address].timestamp;
     }
 
-    // //  Shows the remaining locked value
-    // // @param address of bidder/bidder
-    // // @return uint being the amount of electricity (asker) or the
-    // // amount of ether that has been locked for the trading period
+    // Shows the remaining locked value
+    // address of bidder/bidder
+    // uint being the amount of electricity (asker) or the
+    // amount of ether that has been locked for the trading period
     function getremainingvalue(address _sender) public view returns (uint256) {
         return remainingLockedValue[_sender];
     }
 
     //  Shows all matches of trading period
-    // @return array containing all match-IDs
+    //  array containing all match-IDs
     function getMatches() public view returns (uint256[] memory) {
         return match_ids;
     }
 
-    //  Shows UniformPrice for PV of this trading period
     //  uint being the uniformprice in cent*100
     function getUniformprice() public view returns (uint256) {
         return uniformprice;
