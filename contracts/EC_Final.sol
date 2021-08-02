@@ -3,8 +3,6 @@
 // ERC Token Standard #20 Interface
 // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md
 // ----------------------------------------------------------------------------
-
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -29,7 +27,6 @@ contract EnergyMarket {
     uint256 lastTriggerBlock = block.number;
     uint256 matchAmount = 0;
     uint256 trigger = 0;
-    address ckaddress = address(0); // <-- manually change the address to your token address
     IERC20 private _credits;
 
     constructor(IERC20 credits) {
@@ -59,9 +56,11 @@ contract EnergyMarket {
     }
 
     // Events
-    event sTest(string s);
-    event iTest(uint256 i);
-    event aTest(address a);
+    // event sTest(string s);
+    // event iTest(uint256 i);
+    // event aTest(address a);
+    
+    
     event AskPlaced(
         address asker,
         uint256 amount,
@@ -92,7 +91,6 @@ contract EnergyMarket {
         uint256 tick
     );
     event UpdatePrice(uint256 oldprice, uint256 newprice, string which);
-    event ChangeofToken(address oldtoken, address ckaddress);
 
     // Mappings
     // Every placed ask or bid is connected to the senders address and the addresses
@@ -125,7 +123,7 @@ contract EnergyMarket {
     }
 
     //  Throws if Ask does not include sufficient amount of token
-    modifier hastokenBalance(uint256 _amount) {
+    modifier hasCredits(uint256 _amount) {
         require(
             (_credits.allowance(msg.sender, address(this)) +
                 remainingLockedValue[msg.sender]) >= _amount
@@ -140,9 +138,9 @@ contract EnergyMarket {
         _;
     }
 
-    function addAsk(uint256 _amount, uint256 _price)
+    function add_sell_order(uint256 _amount, uint256 _price)
         public
-        hastokenBalance(_amount)
+        hasCredits(_amount)
     {
         string memory _timestamp = uint2str(block.timestamp);
         Ask storage ask = asks[msg.sender];
@@ -161,7 +159,7 @@ contract EnergyMarket {
     //  _price is the reservation price for Energy,
     //  A market participant can place an bid if no future ask has been made  
     //  in this trading period
-    function addBid(uint256 _amount, uint256 _price)
+    function add_buy_order(uint256 _amount, uint256 _price)
         public
         payable
         hasethBalance(_amount, _price)
@@ -198,14 +196,6 @@ contract EnergyMarket {
         }
         emit BidPlaced(msg.sender, _amount, _price, _timestamp, tick);
     }
-
-    //Update Functions
-    // function changeTokenAddress(address _token) public onlyOwner returns (bool){
-    //   address oldtoken = ckaddress;
-    //   ckaddress = _token;
-    //   emit ChangeofToken(oldtoken,ckaddress);
-    //   return true;
-    // }
 
     // View functions
     //  Shows all current bids
@@ -331,21 +321,21 @@ contract EnergyMarket {
         }
     }
 
-    function try_to_auction() public isTrigger {
+    function start_auction() public isTrigger {
         //Triggering the sorting of bids and asks, as well as triggering the auction
         lastTriggerBlock = block.number; //if the auction is triggered, then we save the current block
         reset_before();
 
         sort_array();
-        pvmatching();
+        pricematch();
 
         rest_of_auction();
         //matchingTransactions();
         reset_after();
     }
 
-    //Matching in the PV market
-    function pvmatching() private {
+    //Pricematching
+    function pricematch() private {
         for (uint256 i = 0; i < bid_ids.length; i++) {
             //go through all bids
             for (uint256 j = 0; j < ask_ids.length; j++) {
@@ -477,7 +467,6 @@ contract EnergyMarket {
 
     //Transactions
     function matchingTransactions() private {
-        //Transactions for PV
         for (uint256 z = 0; z < match_ids.length; z++) {
             _credits.transfer(
                 matches[match_ids[z]].askaddress,
@@ -538,19 +527,4 @@ contract EnergyMarket {
         uniformprice = 0;
     }
 
-    function test() public returns (uint256) {
-        uint256 value = _credits.balanceOf(msg.sender);
-        emit iTest(value);
-        return value;
-    }
-
-    function testA() public returns (address) {
-        emit aTest(address(this));
-        return address(this);
-    }
-
-    function testB() public returns (address) {
-        emit aTest(address(msg.sender));
-        return address(msg.sender);
-    }
 }
