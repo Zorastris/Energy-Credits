@@ -1,42 +1,6 @@
-pragma solidity >=0.8.1 <0.9.0;
+pragma solidity >=0.6.0 <0.9.0;
 
-// ----------------------------------------------------------------------------
-// Energy Credits
-// ERC20 Standard Token
-// Represents electricity in kWh
-//
-// Symbol      : EC
-// Name        : Energy Credits
-// Total supply: 1,000,000.000
-// Decimals    : 3
-// ----------------------------------------------------------------------------
-
-// ----------------------------------------------------------------------------
-// Safe maths
-// ----------------------------------------------------------------------------
-// library SafeMath {
-//     function add(uint a, uint b) internal pure returns (uint c) {
-
-//         c = a + b;
-//         //require(c >= a, "add");
-//         return c;
-//     }
-//     function sub(uint a, uint b) internal pure returns (uint c) {
-//         //require(b <= a, "sub");
-//         return c = a - b;
-//     }
-//     function mul(uint a, uint b) internal pure returns (uint c) {
-//         c = a * b;
-//       // require(a == 0 || c / a == b, "mul");
-//         return c;
-//     }
-//     function div(uint a, uint b) internal pure returns (uint c) {
-//         //require(b > 0 , "div");
-//         c = a / b;
-//         return c;
-//     }
-// }
-
+// SPDX-License-Identifier: MIT
 // ----------------------------------------------------------------------------
 // ERC Token Standard #20 Interface
 // https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md
@@ -81,7 +45,7 @@ contract Owned {
 
     event OwnershipTransferred(address indexed _from, address indexed _to);
 
-    constructor() {
+    constructor() public {
         owner = msg.sender;
     }
 
@@ -103,12 +67,16 @@ contract Owned {
 }
 
 // ----------------------------------------------------------------------------
-// ERC20 Token, with the addition of symbol, name and decimals and a
-// fixed supply
+// Energy Credits
+// ERC20 Standard Token
+// Represents electricity in kWh
+//
+// Symbol      : EC
+// Name        : Energy Credits
+// Total supply: 1,000,000.000
+// Decimals    : 3
 // ----------------------------------------------------------------------------
 contract EnergyCredits is IERC20, Owned {
-    // using SafeMath for uint;
-
     string public symbol;
     string public name;
     uint8 public decimals;
@@ -126,7 +94,7 @@ contract EnergyCredits is IERC20, Owned {
     // ------------------------------------------------------------------------
     // Constructor
     // ------------------------------------------------------------------------
-    constructor() {
+    constructor() public {
         symbol = "EC";
         name = "Energy Credits";
         decimals = 0;
@@ -237,17 +205,8 @@ contract EnergyCredits is IERC20, Owned {
         emit iTest(balances[from]);
         emit iTest(tokens);
 
-        // uint newBal1 = balanceOf(from) - tokens;
-        // uint newBal2 = balanceOf(to) + tokens;
-
-        // emit iTest(newBal1);
-        // setBalance(from, newBal1);
-        // setBalance(from, newBal2);
-
         balances[from] -= tokens;
-
-        allowed[from][msg.sender] -= tokens;
-
+        //allowed[from][to] -= tokens;
         balances[to] += tokens;
 
         emit Transfer(owner, to, tokens);
@@ -319,73 +278,18 @@ contract EnergyCredits is IERC20, Owned {
     }
 }
 
-// contract Ownable {
-//   address private _owner;
-
-//   event OwnershipTransferred(address indexed previousOwner,address indexed newOwner);
-
-//   //  The Ownable constructor sets the original `owner` of the contract to the sender
-//   // account.
-//   constructor() {
-//     _owner = msg.sender;
-//     emit OwnershipTransferred(address(0), _owner);
-//   }
-
-//   // @return the address of the owner.
-//   function owner() public view returns(address) {
-//     return _owner;
-//   }
-
-//   //  Throws if called by any account other than the owner.
-//   modifier onlyOwner() {
-//     require(isOwner());
-//     _;
-//   }
-
-//   // @return true if `msg.sender` is the owner of the contract.
-//   function isOwner() public view returns(bool) {
-//     return msg.sender == _owner;
-//   }
-
-//   //  Allows the current owner to relinquish control of the contract.
-//   // @notice Renouncing to ownership will leave the contract without an owner.
-//   // It will not be possible to call the functions with the `onlyOwner`
-//   // modifier anymore.
-//   function renounceOwnership() public onlyOwner {
-//     emit OwnershipTransferred(_owner, address(0));
-//     _owner = address(0);
-//   }
-
-//   //  Allows the current owner to transfer control of the contract to a newOwner.
-//   // @param newOwner The address to transfer ownership to.
-//   function transferOwnership(address newOwner) public onlyOwner {
-//     _transferOwnership(newOwner);
-//   }
-
-//   //  Transfers control of the contract to a newOwner.
-//   // @param newOwner The address to transfer ownership to.
-//   function _transferOwnership(address newOwner) internal {
-//     require(newOwner != address(0));
-//     emit OwnershipTransferred(_owner, newOwner);
-//     _owner = newOwner;
-//   }
-//   }
-
 contract EnergyMarket {
-    // uint fallbackPriceHigh = 2367;  // 23,67 Cent
-    // uint fallbackPriceLow = 1200;   //12,00 Cent
+    uint256 fallbackPrice = 8000;
     uint256 match_id = 0;
     uint256 uniformprice = 0;
-    uint256 uniformPriceBHKW = 0;
     uint256 tick = 0;
     uint256 lastTriggerBlock = block.number;
     uint256 matchAmount = 0;
     uint256 trigger = 0;
     address ckaddress = address(0); // <-- manually change the address to your token address
-
     IERC20 public credits;
 
-    constructor() {
+    constructor() public {
         credits = new EnergyCredits();
     }
 
@@ -507,10 +411,9 @@ contract EnergyMarket {
     }
 
     //  Creation of a Bid
-    // @param _amount of electricity, _price is the reservation price for PV-Energy,
-    // _pricebhkw is the reservation price for CHP-Energy, _timestamp of bid
-    // @notice A market participant can place an bid if no future ask has been made in t
-    // his trading period, empty asks are forbidden to be protected against DOS attacks
+    //  _amount of electricity, _price is the reservation price for PV-Energy,
+    //  A market participant can place an bid if no future ask has been made in t
+    //  his trading period
     function addBid(uint256 _amount, uint256 _price)
         public
         payable
@@ -752,13 +655,13 @@ contract EnergyMarket {
                 Ask storage greyAsk = asks[address(this)];
                 greyAsk.asker = address(this);
                 greyAsk.amount = matchAmount;
-                greyAsk.price = fallbackPriceLow;
+                greyAsk.price = fallbackPrice;
                 greyAsk.timestamp = getBidTimestamp(bid_ids[i]);
                 remainingLockedValue[greyAsk.asker] = 0;
                 emit AskPlaced(
                     address(this),
                     matchAmount,
-                    fallbackPriceLow,
+                    fallbackPrice,
                     getBidTimestamp(bid_ids[i]),
                     tick
                 );
@@ -792,13 +695,13 @@ contract EnergyMarket {
                 Bid storage greyBid = bids[address(this)];
                 greyBid.bidder = address(this);
                 greyBid.amount = matchAmount;
-                greyBid.price = fallbackPriceHigh;
+                greyBid.price = fallbackPrice;
                 greyBid.timestamp = getAskTimestamp(ask_ids[j]);
                 remainingLockedValue[greyBid.bidder] = 0;
                 emit BidPlaced(
                     address(this),
                     matchAmount,
-                    fallbackPriceHigh,
+                    fallbackPrice,
                     getAskTimestamp(ask_ids[j]),
                     tick
                 );
