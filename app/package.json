@@ -1,0 +1,36 @@
+{
+  "name": "energy-credits",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack-dev-server",
+    "serve": "webpack serve"
+  },
+  "devDependencies": {
+    "@webpack-cli/serve": "^1.5.1",
+    "copy-webpack-plugin": "^5.0.5",
+    "css-loader": "^6.2.0",
+    "style-loader": "^3.2.1",
+    "webpack": "^5.48.0",
+    "webpack-dev-server": "^3.9.0"
+    
+  },
+  "dependencies": {
+    "node-polyfill-webpack-plugin": "^1.1.4",
+    "path-browserify": "^1.0.1",
+    "web3": "^1.5.0"
+  },
+  "main": "webpack.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zorastris/Energy-Credits.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zorastris/Energy-Credits/issues"
+  },
+  "homepage": "https://github.com/Zorastris/Energy-Credits#readme",
+  "description": ""
+}
