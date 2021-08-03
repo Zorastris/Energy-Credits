@@ -1,4 +1,1 @@
-geth --nousb --datadir=$pwd --syncmode 'full' --port 30310 --miner.gasprice 0 --miner.gastarget 470000000000 --http --http.addr 'localhost' --http.port 8545 --http.api admin,eth,miner,net,txpool,personal,web3 --mine --allow-insecure-unlock --unlock "0x80FAbaBEFf092c1B408bBc87251c87FE61e8D2b4" --password password.txt
-
-
-echo "Geth started on node 1"  
+geth --networkid 14333 --datadir "./data" --bootnodes enode://edaec21ae6a85b1252df4ceb4ddc842a9ab74c397f489856039c7ec5ce72470f37554b94bcb11dff51d6ff2b553af9ac39ce9c9b3a7af6876a175768b5836da3@127.0.0.1:30301 --port 30303 --ipcdisable --syncmode full --rpc --allow-insecure-unlock --rpccorsdomain "*" --rpcport 8545 --unlock 0xb4a17e5d278EB3FF96df92FF2FE096b00217e13f --password password.txt --mine console

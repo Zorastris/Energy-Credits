@@ -1,0 +1,16 @@
+note1 : 0xb4a17e5d278EB3FF96df92FF2FE096b00217e13f
+password : 1
+node2 :  0x851106a5c4D8e7EC5AF70683746C05E29e9ab912
+password : 1
+node3 : 0x702AE78d6E546cC8D36528c5BB6CCae4D805Bff4
+password : 1
+bootnode enode : enode://edaec21ae6a85b1252df4ceb4ddc842a9ab74c397f489856039c7ec5ce72470f37554b94bcb11dff51d6ff2b553af9ac39ce9c9b3a7af6876a175768b5836da3@127.0.0.1:0?discport=30301
+
+
+Public address of the key:   0xb01C88B8A3ED249E72d38bF72CA6fd5BA23B7Fa7
+Password: test
+Path of the secret key file: C:\Users\batub\AppData\Local\Ethereum\keystore\UTC--2021-07-30T21-27-05.394931900Z--b01c88b8a3ed249e72d38bf72ca6fd5ba23b7fa7
+
+Public address of the key:   0x4F7B10c7c1bDD228e180180CD3927De0C029BBe4
+Password: test
+Path of the secret key file: C:\Users\batub\AppData\Local\Ethereum\keystore\UTC--2021-07-30T21-28-13.122198300Z--4f7b10c7c1bdd228e180180cd3927de0c029bbe4  
