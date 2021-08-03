@@ -1,7 +1,8 @@
 {
-    "folders": [
-        {
-            "path": "D:\\Energy-Credits"
-        }
-    ]
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
 }

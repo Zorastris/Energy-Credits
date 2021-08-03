@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Energy Market</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<style>
+    input {
+        display: block;
+        margin-bottom: 12px;
+    }
+</style>
+
+<body>
+    <h1>Energy Market</h1>
+    <p>You have <strong class="balance">loading...</strong> Energy Credits</p>
+
+    <div class="section group">
+        <div class="col span_1_of_4">
+
+
+
+            <div class="area">
+                <h2>Send EC</h2>
+                <label for="amount">Amount:</label>
+                <input type="text" id="amount" placeholder="e.g. 95" />
+
+                <label for="receiver">To address:</label>
+                <input type="text" id="receiver" placeholder="e.g. 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae" />
+
+                <button onclick="App.sendCredits()">Send Energy Credits</button>
+                <button onclick="App.refreshBalance()">Refresh Balance</button>
+                <p id="status"></p>
+
+            </div>
+
+
+        </div>
+        <div class="col span_1_of_4">
+
+            <div class="area">
+                <h2>Add Ask</h2>
+                <label for="amount">Amount:</label>
+                <input type="text" id="amount-ask" placeholder="e.g. 95" />
+
+                <label for="price">Price:</label>
+                <input type="text" id="price-ask" placeholder="$5" />
+                <button onclick="App.addAsk()">Add Ask</button>
+            </div>
+
+        </div>
+        <div class="col span_1_of_4">
+
+            <div class="area">
+                <h2>Add Bid</h2>
+                <label for="amount">Amount:</label>
+                <input type="text" id="amount-bid" placeholder="e.g. 95" />
+
+                <label for="price">Price:</label>
+                <input type="text" id="price-bid" placeholder="$5" />
+                <button onclick="App.addAsk()">Add Bid</button>
+            </div>
+
+        </div>
+        <div class="col span_1_of_4">
+
+            <div class="area">
+                
+                <h2>Check Balance</h2>
+                <label for="account">Account address:</label>
+                <input type="text" id="check-balance" placeholder="e.g. 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae" />
+                <label class="check-balance-result">Balance</label>
+                <button onclick="App.checkBalance()">Check</button>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+    <h2>Responsive Table</h2>
+    <div class="table-wrapper">
+        <table class="fl-table">
+            <thead>
+                <tr>
+                    <th>Header 1</th>
+                    <th>Header 2</th>
+                    <th>Header 3</th>
+                    <th>Header 4</th>
+                    <th>Header 5</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+                
+                <tr>
+                    <td>Content 1</td>
+                    <td>Content 1</td>
+                    <td>Content 1</td>
+                    <td>Content 1</td>
+                    <td>Content 1</td>
+                </tr>
+              
+                </tr>
+            <tbody>
+        </table>
+    </div>
+
+
+
+    <script src="index.js"></script>
+</body>
+
+</html>

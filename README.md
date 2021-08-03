@@ -1,2 +1,1 @@
-# Energy Credits
- 
+# Energy-Credits
