@@ -89,11 +89,10 @@ contract EnergyMarket {
         uint256 amount,
         uint256 tick
     );
-    event UpdatePrice(uint256 oldprice, uint256 newprice, string which);
 
     // Mappings
-    // Every placed sell or buy is connected to the senders address and the addresses
-    // are stored in asks and buys
+    // Every placed sell or buy is connected to the senders address 
+    // and the addresses are stored in asks and buys
     mapping(address => Ask) asks;
     address[] public ask_ids;
 
